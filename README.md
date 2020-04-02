@@ -1,6 +1,7 @@
-# To debug experiments in VS code with Google Chrome, configure 'launch.json' file.
-E.g.
+# Debugging experimetns with VS code + Debugger for Chrome
 
+To debug experiments in VS code with Google Chrome, configure 'launch.json' file.
+"file": is set to the folder you have open in VS code. Add file name to the ${workspaceFolder} to launch
 
 {
     // Use IntelliSense to learn about possible attributes.
@@ -12,7 +13,7 @@ E.g.
             "type": "chrome",
             "request": "launch",
             "name": "Debug RS Exp",
-            "file": "${workspaceFolder}/index.html" // This is the folder you opened in VS code. Add file name to this to launch
+            "file": "${workspaceFolder}/index.html" /
         }
     ]
 }
