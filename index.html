@@ -5,40 +5,29 @@
 
 
      <!--External link for CSS style sheet-->
-    <!--Line below for external CSS style sheet (when all files stored in same folder) when running file in browser i.e. offline
-    <link href="style.css" rel="stylesheet" type="text/css">-->
+    <!--Line below for external CSS style sheet (when all files stored in same folder) when running file in browser i.e. offline-->
+    <link href="style.css" rel="stylesheet" type="text/css">
 
-    <!--Line below for external CSS style sheet when running file online i.e. psych-JATOS-->
-    <link rel="stylesheet" type="text/css" href="/study_assets/SR-Exp3/style.css"/>
+    <!--Line below for external CSS style sheet when running file online i.e. psych-JATOS
+    <link rel="stylesheet" type="text/css" href="/study_assets/SR-Exp3/style.css"/>-->
 
-    <!--This script is for running experiment on JATOS-->
-    <script src="/assets/javascripts/jatos.js"></script>
+    <!--This script is for running experiment on JATOS
+    <script src="/assets/javascripts/jatos.js"></script>-->
 
 
     <!-- Use below ABSOLUTE path refs when running study on https://psych-jatos.newcastle.edu.au/jatos (i.e. < JATOS Version 3.2.3 )-->
-    <script src="/study_assets/SR-Exp3/jquery1.js"></script>
+    <!--<script src="/study_assets/SR-Exp3/jquery1.js"></script>
     <script src="/study_assets/SR-Exp3/jquery2.js"></script>
-    <script src="/study_assets/SR-Exp3/underscore.js"></script>
+    <script src="/study_assets/SR-Exp3/underscore.js"></script>-->
 
-<!--
-<script> This function is only necessary when using JATOS variables/functions
-  jatos.onLoad(function() {
-    var username = "0";
-    if (jatos.urlQueryParameters.hasOwnProperty("id")) {
-      username = jatos.urlQueryParameters.id;
-    }
-    /// Start here with your code that uses jatos.js' variables and functions
-  });
-</script>-->
-
-<!-- Use below RELATIVE path refs when running study on local host http://127.0.0.1:9000 (i.e. > JATOS Version 3.2.3 )
+ <!--Use below RELATIVE path refs when running study on local host http://127.0.0.1:9000 (i.e. > JATOS Version 3.2.3 )-->
 <script type="text/javascript" src="jquery1.js"></script>
 <script type="text/javascript" src="jquery2.js"></script>
-<script type="text/javascript" src="underscore.js"></script>-->
+<script type="text/javascript" src="underscore.js"></script>
 
 </head>
 <!-- Uncomment this onload function when running on psych-JATOS-->
-<body>
+<body onload="chooseYourProduct()">
 
   <div id ="goFast"style="display: none;">
     <p> </p>
@@ -87,7 +76,8 @@
 <div id ="instructionsOne" style="display: none;">
     <p> Now we would like you to imagine that you are purchasing <b id="product"></b> </p>
     <p> You will be shown options related to this purchase that look like the image below.</p>
-    <img src="/study_assets/SR-Exp3/S-R_DCE.svg" alt="DCE-ExampleHere">
+    <!--<img src="/study_assets/SR-Exp3/S-R_DCE.svg" alt="DCE-ExampleHere">-->
+    <img src="S-R_DCE.svg" alt="DCE-ExampleHere">
     <p> You will see two options (option <b>A</b> and option <b>B</b>) and each option
         will have two attributes: <em>Price</em> and <em>Quality</em>.</p>
     <p> Choices can be made by pressing the <kbd>Z</kbd> button for option <b>A</b>
@@ -189,14 +179,16 @@ var minfixationtime = 1000;										//minimum time of fixation cross presentati
 var maxfixationtime = 4000;   									// longest possible inter-trial time
 var exponentialRate = .002;    									// rate parameter for exponentially distributed inter-trial times. rate=.002 -> mean exponential of 500ms. combined with minfixationtime=500 gives mean inter-trial time of 1 second. set maxfixationtime to something sensible (eg 5 seconds)
 var phoneBrands = ["A", "B",]; 	// Available phone brands
-var features = [												// Available phone features and the random values it can have
+/*var features = [												// Available phone features and the random values it can have
                 ["Low Price", "High Price",],
                 ["Low Quality", "High Quality",],
-                //["Feature 1", "a", "b", "c", "d", "e"],
-                //["Feature 2", "a", "b", "c", "d", "e"],
-                 ];
+                 ];*/
 
-// ----- Customisation -----
+let features = [['L','o','w',' P','r','i','c','e',' H','i','g','h',' P','r','i','c','e'],
+ ['L','o','w','Q','u','a','l','i','t','y','H','i','g','h','Q','u','a','l','i','t','y'],]
+
+
+ // ----- Customisation -----
 var startDate;
 var startTime;
 var endDate;
@@ -275,7 +267,7 @@ var pageOneDiv = $("#pageOne")
 var yourProd;
 var radios;
 
-// The below jatos.onload(function grabSonaID function is required when running ONLINE psych-JATOS study
+/* The below jatos.onload(function grabSonaID function is required when running ONLINE psych-JATOS study
 jatos.onLoad(function grabSonaID() {
        //var username = jatos.studySessionData.username;
      if (jatos.urlQueryParameters.hasOwnProperty("id")) {
@@ -288,7 +280,7 @@ jatos.onLoad(function grabSonaID() {
            jatos.studySessionData["SonaID"] = username;
            }
      chooseYourProduct();
-       });
+       });*/
 
 
 // The below functions (startDialogBox,recenterDialog, checkLogin, dblCheckCreds)
