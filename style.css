@@ -224,6 +224,23 @@ border-spacing: 100px 10px;
 	 transform: translate(-50%, -50%);
 	 text-align:center;
 	}
+
+#maskTable {
+	font-family: "Arial";
+	font-size: 175%;
+	border-spacing: 100px 10px;
+}
+		
+#maskBody {
+	position: absolute;
+	 top: 27%;
+	 left: 49%;
+	 transform: translate(-50%, -50%);
+	 text-align:center;
+	}
+
+
+
 #endBlock {
 	position: absolute;
 		top:4%;

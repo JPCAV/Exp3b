@@ -56,6 +56,15 @@
       </table>
   </div>
 
+
+
+  <div>
+    <table id="maskTable">
+        <tbody id="maskBody">
+        </tbody>
+    </table>
+</div>
+
 <div id="pageOne" style="display: none">
   <p>In this study we ask you to imagine that you are in the market to purchase a product/service. <br>Please choose from the set below which product you would <b>most</b> likely purchase.</p>
   <form action="#" method="post" class="demoForm" id="productForm" style="display: none;">
@@ -179,10 +188,10 @@ var minfixationtime = 1000;										//minimum time of fixation cross presentati
 var maxfixationtime = 4000;   									// longest possible inter-trial time
 var exponentialRate = .002;    									// rate parameter for exponentially distributed inter-trial times. rate=.002 -> mean exponential of 500ms. combined with minfixationtime=500 gives mean inter-trial time of 1 second. set maxfixationtime to something sensible (eg 5 seconds)
 var phoneBrands = ["A", "B",]; 	// Available phone brands
-/*var features = [												// Available phone features and the random values it can have
+var features = [												// Available phone features and the random values it can have
                 ["Low Price", "High Price",],
                 ["Low Quality", "High Quality",],
-                 ];*/
+                 ];
 
 let features = [['L','o','w',' P','r','i','c','e',' H','i','g','h',' P','r','i','c','e'],
  ['L','o','w','Q','u','a','l','i','t','y','H','i','g','h','Q','u','a','l','i','t','y'],]
@@ -654,6 +663,9 @@ function generatePhoneArray() {									//makes the array of phones
         // to revert to version that does not check for duplicates, only need to uncomment the following line
         //   then delete from if(i==0) through to just above tooSlowPresent (~ 12 lines)
 //        phoneArray.push(createNewPhone());
+  
+          maskArray.push(createMaskedPhone())
+
         if(i==0) {
           phoneArray.push(createNewPhone());
         } else {
@@ -763,6 +775,7 @@ function signalResponseWindow () {
   document.addEventListener('keyup', recordKP, false); // This adds event listener to page ("Listens" for keypress)
   signalResponseCue.show()
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "block";
   document.getElementById("totalProgress").innerHTML = totaltrials;
   srwTimeout = setTimeout(tooSlow, maxResponseWindow)
 }

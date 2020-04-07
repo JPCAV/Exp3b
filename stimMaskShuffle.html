@@ -1,28 +1,20 @@
+<html>
 
+<script>
 // Stimuli - (Low, Price), (High Price), (Low Quality), (High Quality)
 //              (3, 5),        (4,5)       (3, 7)           (4, 7)
 // seventeen unique letters
 // masks should be 12 characters long
-
-var features = [												// Available phone features and the random values it can have
-  ["Low Price", "High Price",],
-  ["Low Quality", "High Quality",],
-   ];
-
-
-   console.log(features[1][0])
 let numPhones = 2
-
 let mask = ['L','o','w','P','r','i','c','e',
 'H','i','g','h','P',"r",'i','c','e','L',
 'o','w','Q','u','a','l','i','t','y','H',
 'i','g','h','Q','u','a','l','i','t','y',]
-
 let maskLength = 12
 let usingFeatures = [1,2]
-let maskArray = []
-let numFeatures = 2
-//let attributeMask = []
+let maskArray = [[,],[,]]
+let numFeatures = 4
+let attributeMask = []
 /*
 function createPhoneMask() {
   let optionMask = {masks:[]}
@@ -43,26 +35,25 @@ return optionMask
 let numMasks = 4
 */
 
-function createMaskedPhone (){
-  let maskPhone = {atts:[]}
-  for(j = 0; j < numFeatures; j++ ) {    
-    maskPhone.atts.push(createAttributeMask())
-  }
-return maskPhone
-}
 
 function createAttributeMask () {
-  let attributeMask = []
     for (i = 0; i < maskLength; i++) {
       // Generate random number from 0 - number of letters in mask array
       var maskElement = Math.floor(Math.random() * mask.length);
       // concatenate letters in 12 character string i.e. mask
       attributeMask += mask[maskElement]
+      
     }
-    return attributeMask
+    return maskArray
   }
 
-console.log(createMaskedPhone())
+  console.log(maskArray)
+
+  /*
+  for(j = 0; j < numFeatures; j++ ) {
+    maskArray.push(createAttributeMask())
+  }
+console.log(maskArray)
 
 
 
@@ -79,7 +70,6 @@ function createNewPhone() {								//creates phones
       // Pick a random value for the feature
       var randomValue = Math.floor(Math.random() * (features[usingFeatures[i]].length));
       phone.features[usingFeatures[i]] = features[usingFeatures[i]][randomValue];
-      // 
   }
   // Return the new phone
   return phone;
@@ -88,13 +78,6 @@ function createNewPhone() {								//creates phones
 
 
  
-
-// Push feature masks into maskArray object
-for (var i = 0; i < numPhones; i++) {
-  maskArray.push(createAttributeMask());
-}
-
-console.log(maskArray)
 
 
 /*if(feature == "Low Price")
@@ -150,3 +133,6 @@ function mak() {
 console.log(mak(word))
 
 */
+
+</script>
+</html>
