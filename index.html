@@ -50,12 +50,11 @@
   </div>
 
   <div>
-      <table id="phonesTable">
+      <table id="phonesTable"> 
           <tbody id="tableBody">
           </tbody>
       </table>
   </div>
-
 
 
   <div>
@@ -99,9 +98,9 @@
        <p> You <strong>MUST</strong> choose your preferred option when you see the screen below.</p>
   </div>
   <div id="iTwoP2">
-      <p>************</p>
+      <!--<p>************</p>-->
       <p>RESPOND NOW</p>
-      <p>************</p>
+      <!--<p>************</p>-->
   </div>
   <div id="iTwoP3">
        <p> Do not respond before you see the screen above - your response will not be recorded.</p>
@@ -113,9 +112,9 @@
 
 
 <div id ="signalResponseCue" style="display: none;">
-   <p>************</p>
+  <!--<p>************</p>-->
    <p>RESPOND NOW</p>
-   <p>************</p>
+   <!--<p>************</p>-->
 </div>
 
 <div id ="experimentEnd"style="display: none;">
@@ -159,8 +158,8 @@
 
 // ----- Customisation -----
 var online = true;												//Is the current version online or not
-var numFeatures = 2;  	 			     			  	 		// Number of features for each poduct
-var randomPhonesMode = 2; 				   				 		// Number of Phones - Modes (0, 1, 2, 3, 4): 0 = Choose a random phone from 'specificNumPhones' randomised per trial. 1 = Random phones between 'minPhones' & 'maxPhones'. 2 = static phones from 'fixedPhones'. 3 = Static phones from 'fixedPhones' randomised per block. 4 = static phones, randomised BS.
+var numFeatures = 2;  	 			     			  	 	// Number of features for each poduct
+var randomPhonesMode = 2; 				   				 	// Number of Phones - Modes (0, 1, 2, 3, 4): 0 = Choose a random phone from 'specificNumPhones' randomised per trial. 1 = Random phones between 'minPhones' & 'maxPhones'. 2 = static phones from 'fixedPhones'. 3 = Static phones from 'fixedPhones' randomised per block. 4 = static phones, randomised BS.
 var randomPresentation = 1; 									// Feature Order Presentation - Modes (0, 1, 2): 0 = set order of phones. 1 = between subjects randomisation of order. 2 = within subjects randomisation (per trial)
 var minPhones = 2;                         				 		// 'randomPhonesMode' = 1, min Phones to choose from
 var maxPhones = 2;                         				 		// 'randomPhonesMode' = 1, max Phones to choose from
@@ -174,8 +173,8 @@ var randomTimer = true; 										//is the timer random?
 var timerPresent = false;										//is the timer present?
 var tooSlowPresent = true;										//Does the choice timeout?
 var fastOrAccurate = [1,2]; 									// dont change this
-var nTrials = 41;												//amount of trials per block
-var nBlocks = 12;												//number of blocks
+var nTrials = 4;												//amount of trials per block 41
+var nBlocks = 2;												//number of blocks 12
 var waitTime = 2000;											// time someone has to wait after going too fast before they can continue
 var maxTrialTime = [];											//maximum trial time
 var maxTrialTimeOpt = [100, 200, 400, 800, 1200, 2000, 4000];						//Different trial times (used if randomTimer = true)
@@ -193,9 +192,10 @@ var features = [												// Available phone features and the random values it
                 ["Low Quality", "High Quality",],
                  ];
 
-let features = [['L','o','w',' P','r','i','c','e',' H','i','g','h',' P','r','i','c','e'],
- ['L','o','w','Q','u','a','l','i','t','y','H','i','g','h','Q','u','a','l','i','t','y'],]
-
+let featuresMasks = ['L','o','w','P','r','i','c','e',
+'H','i','g','h','P',"r",'i','c','e','L',
+'o','w','Q','u','a','l','i','t','y','H',
+'i','g','h','Q','u','a','l','i','t','y',]
 
  // ----- Customisation -----
 var startDate;
@@ -225,9 +225,12 @@ var srwTimeout;
 var pFeedbackTO;
 var endExpTO;
 var stimulusPresentationLength;
+var maskPresentationLength
 
 var totaltrials = (nTrials*nBlocks);
 var phoneArray = [];
+var maskArray = []
+let maskLength = 12
 var usingFeatures = [];
 var numPhones = [];
 var dataOutput = [];
@@ -269,7 +272,6 @@ var spacebarToContinue = $('#spacebarToContinue')
 var tooSlowDiv = $("#youWentTooSlow")
 var tooFastDiv = $("#youWentTooFast")
 var inTimeDiv = $("#inTime")
-
 
 var prodFormDiv = $('#productForm')
 var pageOneDiv = $("#pageOne")
@@ -378,27 +380,14 @@ function getProduct() { // get value of selected 'ship' radio button in 'prodFor
   instructOne()
 }
 
-
-
 function instructOne() {
   //console.log("instructOne");
   instruxOne.show()
   document.getElementById('product').innerHTML = yourProd;
 	experimentStartDate = new Date();
 	experimentStartTime = experimentStartDate.getTime();
-  instructDelay1 = setTimeout(instructOneButton, 10000)
-  /*
-  // 1. Create the button
-  var introButton = document.createElement("button");
-  introButton.innerHTML = "Click here to continue";
-  // 2. Append somewhere
-  document.getElementById('instructionsOne');
-  instructionsOne.appendChild(introButton);
-  // 3. Add onclick
-  introButton.setAttribute("class", "btn");
-  introButton.setAttribute("onclick", "instructTwo()");*/
+  instructDelay1 = setTimeout(instructOneButton, 1000)
 }
-
 
 function instructOneButton (){
   // 1. Create the button
@@ -412,26 +401,12 @@ function instructOneButton (){
   introButton.setAttribute("onclick", "instructTwo()")
 }
 
-
-
 function instructTwo() {
   //console.log("instructTwo");
   instruxOne.hide()
   instruxTwo.show()
-  instructDelay1 = setTimeout(instructTwoButton, 10000)
-	//document.getElementById('howManyTrials').innerHTML = totaltrials;
-  //document.getElementById('blocks').innerHTML = nBlocks;
-  /* 1. Create the button
-  var instructTwoContButton = document.createElement("button");
-  instructTwoContButton.innerHTML = "Click here to continue";
-  // 2. Append somewhere
-  document.getElementById('instructionsTwo');
-  instructionsTwo.appendChild(instructTwoContButton);
-  // 3. Add onclick
-  instructTwoContButton.setAttribute("class", "btn");
-  instructTwoContButton.setAttribute("onclick", "postInstruct()");*/
+  instructDelay1 = setTimeout(instructTwoButton, 1000)
 }
-
 
 function instructTwoButton (){
   // 1. Create the button
@@ -445,10 +420,6 @@ function instructTwoButton (){
   instructTwoContButton.setAttribute("onclick", "postInstruct()");
 }
 
-
-
-
-
 function postInstruct() {
   instruxTwo.hide()
   //console.log("postInstruct");
@@ -456,14 +427,13 @@ function postInstruct() {
   initialisePhoneSetup();
 }
 
-
-function initialiseSetup() {							//makes the experiment start
+function initialiseSetup() {		// Start experiment
   //console.log("initialiseSetup")
   document.getElementById("phonesTable").style.display = "block";
+  document.getElementById("maskTable").style.display = "block";
   document.getElementById("totalProgress").innerHTML = totaltrials;
   progDiv();
 }
-
 
 function initialisePhoneSetup() {
     //console.log("initialisePhoneSetup");
@@ -502,9 +472,11 @@ function initialisePhoneSetup() {
 
 function postTrial() {
   //console.log("postTrial")
-	clearTimeout(timeout);
+  clearTimeout(timeout);
+  maskArray.length = 0
   loading.show()
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
   document.getElementById("totalProgress").innerHTML = totaltrials;
   progDiv();
 	if (trialInstructions == false) {
@@ -517,7 +489,6 @@ function postTrial() {
 	}
 }
 
-
 function progDiv() {
   if (progressOn == true) {
     progressDiv.show()
@@ -527,7 +498,6 @@ else {
   }
 }
 
-
 function preTrial() {
   //console.log("preTrial")
   goSlow.hide()
@@ -535,6 +505,7 @@ function preTrial() {
   loading.hide()
   fixationCross.show()
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
   document.getElementById("totalProgress").innerHTML = totaltrials;
   progDiv();
 	/* Exponential random number generator
@@ -556,7 +527,6 @@ function preTrial() {
 	}
 }
 
-
 function randomExponential(rate, randomUniform) {
   //console.log("randomExponential");
 	// Allow to pass a random uniform value or function
@@ -567,7 +537,6 @@ function randomExponential(rate, randomUniform) {
   	return (-Math.log(U)/rate) + minfixationtime;
 }
 
-
 /*
 whether there are instructions present (ie be fast or accurate). randomises the condition shown.
 Feature Order Presentation - Modes (0, 1, 2):
@@ -575,6 +544,7 @@ Feature Order Presentation - Modes (0, 1, 2):
 */
 function beSomething() {
   //console.log("beSomething");
+  console.log(maskArray)
   loading.hide()
   fixationCross.hide()
 if (randomPresentation == 2) {
@@ -592,7 +562,8 @@ var randomStimulus = Math.floor(Math.random() * fastOrAccurate.length);
             stimulus = fastOrAccurate[randomStimulus];
 if (stimulus == 1) {
 	goFast.show()
-	document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
 	stimTimeout = setTimeout(preTrial, stimTime);
 	if (randomTimer == true) {
 		 temp = Math.floor(Math.random() * maxTrialTimeOpt.length);
@@ -604,7 +575,8 @@ if (stimulus == 1) {
 	}
 else if (stimulus == 2) {
 	goSlow.show()
-	document.getElementById("phonesTable").style.display = "none"
+  document.getElementById("phonesTable").style.display = "none"
+  document.getElementById("maskTable").style.display = "none";
 	stimTimeout = setTimeout(preTrial, stimTime);
 	if (randomTimer == true) {
 		 temp = Math.floor(Math.random() * maxTrialTimeOpt.length);
@@ -626,14 +598,42 @@ if (randomTimer == true) {
 	else {
 		maxTrialTime = setMaxTrialTime;
 		}
-generatePhoneArray();
+generatePhoneArray()
+generateMaskArray()
   }
 }
+
+function generateMaskArray () {
+  //document.getElementById("maskTable").style.display = "block";
+  for(var k = 0; k < numFeatures; k++)
+  maskArray.push(createMaskedPhone())
+}
+
+function createMaskedPhone (){ //Added for RS w/ mask
+  let maskPhone = {atts:[]}
+  for(j = 0; j < numFeatures; j++) {    
+    maskPhone.atts.push(createAttributeMask())
+  }
+return maskPhone
+}
+
+function createAttributeMask () { //Added for RS w/ mask
+  let attributeMask = []
+    for (i = 0; i < maskLength; i++) {
+      // Generate random number from 0 - number of letters in mask array
+      var maskElement = Math.floor(Math.random() * featuresMasks.length);
+      // concatenate letters in 12 character string i.e. mask
+      attributeMask += featuresMasks[maskElement]
+    }
+    return attributeMask
+  }
+
 
 
 function generatePhoneArray() {									//makes the array of phones
   //console.log("generatePhoneArray");
   document.getElementById("phonesTable").style.display = "block";
+  //document.getElementById("maskTable").style.display = "block";
   fixationCross.hide()
       progDiv();
     clearTimeout(timeout);
@@ -660,16 +660,9 @@ function generatePhoneArray() {									//makes the array of phones
     phoneArray = [];
     // Create 'numPhones' new phones
     for (var i = 0; i < numPhones; i++) {
-        // to revert to version that does not check for duplicates, only need to uncomment the following line
-        //   then delete from if(i==0) through to just above tooSlowPresent (~ 12 lines)
-//        phoneArray.push(createNewPhone());
-  
-          maskArray.push(createMaskedPhone())
-
-        if(i==0) {
-          phoneArray.push(createNewPhone());
-        } else {
-          // hard coded to prevent duplicates when numPhones=2. Not for use when numPhones>2!
+      if(i==0) {
+        phoneArray.push(createNewPhone());
+        } else { // hard coded to prevent duplicates when numPhones=2. Not for use when numPhones>2!
           duplicatePhone = true;
           while(duplicatePhone == true) {
             tmpPhone = createNewPhone();
@@ -678,7 +671,6 @@ function generatePhoneArray() {									//makes the array of phones
               if(tmpPhone.features[j] != phoneArray[0].features[j]) duplicatePhone = false;
             }
           }
-          // phoneArray.push(createNewPhone());    //
           phoneArray.push(tmpPhone);
         }
     }
@@ -699,8 +691,6 @@ function generatePhoneArray() {									//makes the array of phones
 
 
 
-
-
 function createNewPhone() {								//creates phones
     //console.log("createNewPhone");
     // New Phone
@@ -717,7 +707,7 @@ function createNewPhone() {								//creates phones
 }
 
 
-function updateTable() {									//makes the phone table
+function updateTable() {									// Create the DCE table
     //console.log("updateTable");
     // Get the child nodes of the table
     var tableBody = document.getElementById("tableBody");
@@ -732,52 +722,54 @@ function updateTable() {									//makes the phone table
     for (var brand = 0; brand < numPhones; brand++) {
         addCell(row, "td", phoneBrands[brand]);
     }
-    // Add the recommendation
-    /*if (recommendation == true) {
-    var row = createRow();
-    for (var currentPhone = -1; currentPhone < numPhones; currentPhone++) {
-        if (currentPhone == recommendedPhone && recommendation)
-            addCell(row, "td", "Highly Popular");
-        else
-            addCell(row, "td", "");
-    }
-    }
-    else {
-    }*/
-
     // Fill the data in
     for (var currentFeature = 0; currentFeature < numFeatures; currentFeature++) {
-        var row = createRow();
-
+        var row = createRow()
         for (var currentPhone = 0; currentPhone < numPhones; currentPhone++) {
-
-            /*if (currentPhone == -1) // This is adding the headings in
-                addCell(row, "th", features[usingFeatures[currentFeature]][0]);
-            else // This is adding the contents in*/
-                addCell(row, "td", phoneArray[currentPhone].features[usingFeatures[currentFeature]]);
+            // This is adding the contents in*/
+            addCell(row, "td", phoneArray[currentPhone].features[usingFeatures[currentFeature]]);
         }
     }
-	document.getElementById("phonesTable").style.display = "block";
-  stimulusPresentationLength = setTimeout(signalResponseWindow,maxTrialTime)
+  stimulusPresentationLength = setTimeout(maskDCE, maxTrialTime)
+}
+
+function maskDCE() {									//makes the phone table
+  //console.log("updateTable")
+  document.getElementById("phonesTable").style.display = "none";
+  signalResponseCue.show()
+  clearTimeout(stimulusPresentationLength)
+    // Get the child nodes of the table
+    var maskBody = document.getElementById("maskBody")
+    var maskRows = maskBody.getElementsByTagName("tr")
+    // Delete the current table
+    while(maskRows.length != 0)
+        maskRows[0].remove()
+    // Add the Brand column - "th" header cell, "td" standard cell contains data
+    var row = createMaskRow()
+    //addCell(row, "th", "")
+    // Add the current features row
+    for (var brand = 0; brand < numPhones; brand++) {
+        addCell(row, "td", phoneBrands[brand])
+      }
+    // Fill the data in
+    for (var currentFeature = 0; currentFeature < numFeatures; currentFeature++) {
+        var row = createMaskRow()
+        for (var currentPhone = 0; currentPhone < numPhones; currentPhone++) {
+             // Add attributes from mask array into table
+             addCell(row, "td", maskArray[currentPhone].atts[usingFeatures[currentFeature]]);
+        }
+    }
+  clearTimeout(timeout);
+  document.getElementById("maskTable").style.display = "block";
+  startTimer();
+  document.addEventListener('keyup', recordKP, false);
+  maskPresentationLength = setTimeout(tooSlow, maxResponseWindow)
 }
 
 function updateTrialNumber() {
   //console.log("updateTrialNumber");
-var currenttotaltrial = ((nCurrentTrial+1)+(nCurrentBlock*nTrials));
-document.getElementById("currentProgress").innerHTML = currenttotaltrial;
-}
-
-
-function signalResponseWindow () {
-  //console.log("signalResponseWindow");
-  clearTimeout(timeout);
-  startTimer();
-  document.addEventListener('keyup', recordKP, false); // This adds event listener to page ("Listens" for keypress)
-  signalResponseCue.show()
-  document.getElementById("phonesTable").style.display = "none";
-  document.getElementById("maskTable").style.display = "block";
-  document.getElementById("totalProgress").innerHTML = totaltrials;
-  srwTimeout = setTimeout(tooSlow, maxResponseWindow)
+  var currenttotaltrial = ((nCurrentTrial+1)+(nCurrentBlock*nTrials));
+  document.getElementById("currentProgress").innerHTML = currenttotaltrial;
 }
 
 
@@ -806,8 +798,14 @@ function createRow() {
     var row = document.createElement("tr");
     tableBody.appendChild(row);
     return row;
-}
+  }
 
+function createMaskRow() {
+  //console.log('createRow')
+    var row = document.createElement("tr");
+    maskBody.appendChild(row);
+    return row;
+  }
 
 function addCell(row, type, input) {
   //console.log('addCell');
@@ -817,13 +815,12 @@ function addCell(row, type, input) {
     return cell;
 }
 
-
 function phoneSelected(selected) {										//records which phone is selected and generates what happens next
     //console.log("phoneSelected");
+    clearTimeout(maskPresentationLength)
     rt = endTime - startTime;
     if (rt < minTrialTime) {
         var output = "";
-
         /* Output file appearance on a valid trial
         For each phone:
         Block, trial, feature 1, feature 2, feature n, reponse time, was there an error? (0/1/2 - no error/too fast/too slow),
@@ -863,10 +860,9 @@ function phoneSelected(selected) {										//records which phone is selected an
         else
             output += "0;\n"
     }
-
     dataOutput.push(output);
     //console.log("tooFastTrial")
-        tooFast();
+    tooFast();
         }
     else {
       /* Output file appearance on a valid trial
@@ -874,13 +870,13 @@ function phoneSelected(selected) {										//records which phone is selected an
       Block, trial, feature 1, feature 2, feature n, reponse time, was there an error? (0/1/2 - no error/too fast/too slow),
       Recommended phone 1/0 (Y/N), selected this phone 1/0 (Y/N);
       */
+    document.getElementById("maskTable").style.display = "none";
     var output = "";
     for (var currentPhone = 0; currentPhone < numPhones; currentPhone++) {
         output += nCurrentBlock +", " + nCurrentTrial + ", ";
         for (var currentFeature = 0; currentFeature < numFeatures; currentFeature++) {
             output += phoneArray[currentPhone].features[usingFeatures[currentFeature]] + ", ";
         }
-
         output += rt + ", ";
         output += "null" + ", ";
         if (tooSlowPresent == true) {
@@ -909,19 +905,16 @@ function phoneSelected(selected) {										//records which phone is selected an
         else
             output += "0;\n"
     }
-
     dataOutput.push(output);
     posiFeedback();
     //console.log("Valid Trial")
+  }
 }
-}
-
 
 function posiFeedback() {
   inTimeDiv.show();
   pFeedbackTO = setTimeout(nextRound, 500);
 }
-
 
 function startTimer() {
   //console.log("startTimer")												//starts the timer
@@ -930,7 +923,6 @@ function startTimer() {
     countdownEndTime = startTime + maxTrialTime;
     inTrial = true;
 	}
-
 
 function timeLeft() {												//function which writes how long left
 //console.log("timeLeft")
@@ -956,7 +948,6 @@ function timeLeft() {												//function which writes how long left
     	}
 	}
 
-
 function stopTimer() {
   //console.log('stopTimer')												//after phone selected, gets time and calculates time taken
     endDate = new Date();
@@ -965,11 +956,10 @@ function stopTimer() {
     clearTimeout(srwTimeout);
 	}
 
-
-
 function tooFast() {														//when someone goes too fast (can set MinTrialTime above)
   //console.log("tooFast");
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
   tooFastDiv.show()
   signalResponseCue.hide()
 	progDiv();
@@ -983,14 +973,12 @@ function tooFast() {														//when someone goes too fast (can set MinTrial
         }
     }
 
-
 function fastTimeout() {
   //console.log("fastTimeout");
   stopContEvent = true;
   spacebarToContinue.show()
-  document.addEventListener('keyup', contKP,false);
+  document.addEventListener('keyup', contKP,false)
 }
-
 
 function contKP(event) {
   if (event.keyCode == 32 && stopContEvent == true){
@@ -1009,10 +997,11 @@ function tooSlow() {					//when someone doesnt respond fast enough. Can set this
   //console.log("tooSlow");
   stopTimer();
   document.removeEventListener('keyup', recordKP, false);
+  document.getElementById("maskTable").style.display = "none";
   document.getElementById("phonesTable").style.display = "none";
   tooSlowDiv.show()
   signalResponseCue.hide()
-	clearTimeout(timeout);
+  clearTimeout(timeout);
 	rt = endTime - startTime;
   /* Output file appearance on a "TOO SLOW" trial
   For each phone
@@ -1057,7 +1046,7 @@ function tooSlow() {					//when someone doesnt respond fast enough. Can set this
         else {
             contWaitTime = setTimeout(fastTimeout, waitTime);
             }
-}
+          }
 
 
 function nextRound() {										//moves to the next trial
@@ -1072,8 +1061,6 @@ function nextRound() {										//moves to the next trial
         endOfBlock();
         }
     }
-
-
 
 function endOfBlock() {									//works out the end of the block
  	//console.log("endOfBlock");
@@ -1095,20 +1082,17 @@ function endOfBlock() {									//works out the end of the block
  	}
  }
 
-
-
 function showEndBlock() {									//shows "end of block"
   //console.log("showEndBlock")
   regEOBKP = true;
   endBlock.show()
   document.getElementById('chosenProduct').innerHTML = yourProd;
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
   document.addEventListener('keyup', endOBContKP,false);
   progDiv();
   clearTimeout(timeout);
 }
-
-
 
 function endOBContKP(event) {
   //console.log("endOBContKP")
@@ -1122,16 +1106,15 @@ function endOBContKP(event) {
          }
 
 
-
 function endOfExperiment() {									//shows the experiment end
   //console.log("endOfExperiment")
   expEnd.show()
   document.getElementById("phonesTable").style.display = "none";
+  document.getElementById("maskTable").style.display = "none";
   clearTimeout(timeout);
   //console.log(dataOutput);
   endExpTO = setTimeout(saveResults,2000);
 }
-
 
 
 function saveResults() {										//function to save the output file to php
@@ -1164,6 +1147,7 @@ function saveResults() {										//function to save the output file to php
     var expVarTxt = output_txt;
     var expVarFn = username;
     var expSendVariables = "" + expVarTxt + "Sona ID = " + expVarFn;
+     console.log(expSendVariables)
 
     //experimentDataRequest.send(expSendVariables);
     //console.log(expSendVariables);
