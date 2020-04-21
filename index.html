@@ -65,6 +65,7 @@
 </div>
 
 <div id="pageOne" style="display: none">
+  <p><b>Before you begin, please ensure that your internet browser is set to full screen.</b></p>
   <p>In this study we ask you to imagine that you are in the market to purchase a product/service. <br>Please choose from the set below which product you would <b>most</b> likely purchase.</p>
   <form action="#" method="post" class="demoForm" id="productForm" style="display: none;">
       <fieldset>
@@ -114,7 +115,7 @@
 <div id ="signalResponseCue" style="display: none;">
   <!--<p>************</p>-->
    <p>RESPOND NOW</p>
-   <!--<p>************</p>-->
+  <!--<p>************</p>-->
 </div>
 
 <div id ="experimentEnd"style="display: none;">
@@ -130,14 +131,21 @@
     <p> + </p>
 </div>
 
-<div id ="youWentTooFast" style="display: none;">
-    <p> Too Fast!! </p>
-    <p> Please try not to anticipate the 'RESPOND NOW' signal. </p>
+<div id ="pleaseConsider" class="demand" style="display: none;">
+<p> Please try not to anticipate the 'RESPOND NOW' signal. </p>
 </div>
 
-<div id ="youWentTooSlow" style="display: none;">
-    <p> Too slow!! </p>
-  <!-- <p> It is important to carefully consider the available options. However, please try to make faster choices in future trials. </p> -->
+<div id ="tooFast" class="timeout" style="display: none;">
+    <p><em> Too Fast!! </em></p>
+    <p>  </p>
+</div>
+
+<div id ="tooSlow" class="timeout" style="display: none;">
+  <p><em> Too slow!! </em></p>
+</div>
+
+<div id ="makeFasterChoices" class="demand" style="display: none;">
+<p> It is important to carefully consider the available options. However, please try to make faster choices in future trials. </p>
 </div>
 
 <div id ="spacebarToContinue" style="display: none;">Press spacebar to continue</div>
@@ -173,8 +181,8 @@ var randomTimer = true; 										//is the timer random?
 var timerPresent = false;										//is the timer present?
 var tooSlowPresent = true;										//Does the choice timeout?
 var fastOrAccurate = [1,2]; 									// dont change this
-var nTrials = 4;												//amount of trials per block 41
-var nBlocks = 2;												//number of blocks 12
+var nTrials = 41;												//amount of trials per block 41
+var nBlocks = 12;												//number of blocks 12
 var waitTime = 2000;											// time someone has to wait after going too fast before they can continue
 var maxTrialTime = [];											//maximum trial time
 var maxTrialTimeOpt = [100, 200, 400, 800, 1200, 2000, 4000];						//Different trial times (used if randomTimer = true)
@@ -269,9 +277,11 @@ var fixationCross = $('#fixationCross')
 var signalResponseCue = $('#signalResponseCue')
 var expEnd = $("#experimentEnd")
 var spacebarToContinue = $('#spacebarToContinue')
-var tooSlowDiv = $("#youWentTooSlow")
-var tooFastDiv = $("#youWentTooFast")
+var tooSlowDiv = $("#tooSlow")
+var tooFastDiv = $("#tooFast")
 var inTimeDiv = $("#inTime")
+var pleaseConsider = $("#pleaseConsider")
+var fasterChoicesDiv = $("#makeFasterChoices")
 
 var prodFormDiv = $('#productForm')
 var pageOneDiv = $("#pageOne")
@@ -386,7 +396,7 @@ function instructOne() {
   document.getElementById('product').innerHTML = yourProd;
 	experimentStartDate = new Date();
 	experimentStartTime = experimentStartDate.getTime();
-  instructDelay1 = setTimeout(instructOneButton, 1000)
+  instructDelay1 = setTimeout(instructOneButton, 10000)
 }
 
 function instructOneButton (){
@@ -405,7 +415,7 @@ function instructTwo() {
   //console.log("instructTwo");
   instruxOne.hide()
   instruxTwo.show()
-  instructDelay1 = setTimeout(instructTwoButton, 1000)
+  instructDelay1 = setTimeout(instructTwoButton, 10000)
 }
 
 function instructTwoButton (){
@@ -961,6 +971,7 @@ function tooFast() {														//when someone goes too fast (can set MinTrial
   document.getElementById("phonesTable").style.display = "none";
   document.getElementById("maskTable").style.display = "none";
   tooFastDiv.show()
+  pleaseConsider.show()
   signalResponseCue.hide()
 	progDiv();
   clearTimeout(timeout);
@@ -988,6 +999,8 @@ function contKP(event) {
            spacebarToContinue.hide()
            tooSlowDiv.hide()
            tooFastDiv.hide()
+           pleaseConsider.hide()
+           fasterChoicesDiv.hide()
            postTrial();
            //console.log('spacebar Pressed')
           }
@@ -1000,6 +1013,7 @@ function tooSlow() {					//when someone doesnt respond fast enough. Can set this
   document.getElementById("maskTable").style.display = "none";
   document.getElementById("phonesTable").style.display = "none";
   tooSlowDiv.show()
+  fasterChoicesDiv.show()
   signalResponseCue.hide()
   clearTimeout(timeout);
 	rt = endTime - startTime;
@@ -1064,8 +1078,10 @@ function nextRound() {										//moves to the next trial
 
 function endOfBlock() {									//works out the end of the block
  	//console.log("endOfBlock");
-  tooFastDiv.hide();
-  tooSlowDiv.hide();
+  tooFastDiv.hide()
+  pleaseConsider.hide()
+  tooSlowDiv.hide()
+  fasterChoicesDiv.hide()
  	nCurrentTrial = (nCurrentTrial - nTrials);
  	nCurrentBlock++;
  	 if (randomPhonesMode == 3) {
